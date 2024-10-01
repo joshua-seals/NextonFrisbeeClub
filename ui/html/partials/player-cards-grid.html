@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Cards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .name-container {
+            background-color: #e0e0e0;
+            padding: 10px;
+        }
+        .player-name {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .player-image {
+            width: 100%;
+            height: 225px;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .stat-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            font-weight: bold;
+        }
+        .slider {
+            width: 150px;
+        }
+        .style-container {
+            margin-top: 15px;
+        }
+        .style-header {
+            margin: 0 0 5px 0;
+            font-size: 1em;
+        }
+        .style-description {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        {{range .Players}}
+        <div class="card">
+            <div class="name-container">
+                <h2 class="player-name">{{.Name}}</h2>
+            </div>
+            <img src="{{.ImageURL}}" alt="{{.Name}}'s picture" class="player-image">
+            <div class="card-content">
+                <div class="stat-container">
+                    <span class="stat-label">Games:</span>
+                    <span class="stat-value">{{.Games}}</span>
+                </div>
+                <div class="stat-container">
+                    <span class="stat-label">Offense:</span>
+                    <input type="range" min="0" max="10" value="{{.Offense}}" class="slider" disabled>
+                </div>
+                <div class="stat-container">
+                    <span class="stat-label">Defense:</span>
+                    <input type="range" min="0" max="10" value="{{.Defense}}" class="slider" disabled>
+                </div>
+                <div class="stat-container">
+                    <span class="stat-label">Speed:</span>
+                    <input type="range" min="0" max="10" value="{{.Speed}}" class="slider" disabled>
+                </div>
+                <div class="stat-container">
+                    <span class="stat-label">Endurance:</span>
+                    <input type="range" min="0" max="10" value="{{.Endurance}}" class="slider" disabled>
+                </div>
+                <div class="style-container">
+                    <h3 class="style-header">Style:</h3>
+                    <p class="style-description">{{.Style}}</p>
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
+</body>
+</html>
