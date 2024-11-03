@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Cards</title>
+{{ define "title" }} Player Cards {{ end }}
+
+{{ define "main" }}    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,7 +60,7 @@
             color: #666;
         }
     </style>
-</head>
+
 <body>
     <div class="grid">
         {{range .Players}}
@@ -102,4 +99,4 @@
         {{end}}
     </div>
 </body>
-</html>
+{{ end }}

@@ -3,6 +3,8 @@ package main
 import (
 	"html/template"
 	"net/http"
+
+	"github.com/joshua-seals/NextonFrisbeeClub/internal/models"
 )
 
 func (app *App) home(w http.ResponseWriter, r *http.Request) {
@@ -69,31 +71,19 @@ func (app *App) about(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-type Player struct {
-	Name      string
-	ImageURL  string
-	Games     int
-	Offense   int
-	Defense   int
-	Speed     int
-	Endurance int
-	Style     string
-}
-
-func renderPlayerCards(w http.ResponseWriter, players []Player) {
-	tmpl, err := template.ParseFiles("path/to/player-cards-grid.html")
+func renderPlayerCards(w http.ResponseWriter, players []models.Player) {
+	files := []string{
+		"./ui/html/base.html",
+		"./ui/html/partials/nav.html",
+		"./ui/html/partials/player-cards-grid.html",
+	}
+	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	data := struct {
-		Players []Player
-	}{
-		Players: players,
-	}
-
-	err = tmpl.Execute(w, data)
+	err = tmpl.Execute(w, players)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -101,7 +91,7 @@ func renderPlayerCards(w http.ResponseWriter, players []Player) {
 
 func playersHandler(w http.ResponseWriter, r *http.Request) {
 	// Fetch players from database
-	players, err := fetchPlayersFromDB()
+	players, err := models.FetchPlayersFromDB()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
