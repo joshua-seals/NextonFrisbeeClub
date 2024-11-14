@@ -13,5 +13,6 @@ func (app *App) Routes() *http.ServeMux {
 	r.HandleFunc("GET /{$}", app.home)
 	r.HandleFunc("GET /about", app.about)
 	r.HandleFunc("GET /ultimate", app.ultimate)
+	r.HandleFunc("GET /players", app.playersHandler)
 	return r
 }

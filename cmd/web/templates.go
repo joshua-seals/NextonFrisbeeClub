@@ -1,8 +1,6 @@
 package main
 
 import (
-	"html/template"
-
 	"github.com/joshua-seals/NextonFrisbeeClub/internal/models"
 )
 
@@ -12,8 +10,9 @@ import (
 // This way it is all accessible.
 type templateData struct {
 	PlayerCard *models.Player
+	Players    []*models.Player
 }
 
-type Templates struct {
-	templates *template.Template
-}
+// type Templates struct {
+// 	templates *template.Template
+// }

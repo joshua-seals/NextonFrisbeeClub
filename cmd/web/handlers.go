@@ -71,11 +71,11 @@ func (app *App) about(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func renderPlayerCards(w http.ResponseWriter, players []models.Player) {
+func (app *App) renderPlayerCards(w http.ResponseWriter, data *templateData) {
 	files := []string{
 		"./ui/html/base.html",
 		"./ui/html/partials/nav.html",
-		"./ui/html/partials/player-cards-grid.html",
+		"./ui/html/pages/player-cards-grid.html",
 	}
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
@@ -83,19 +83,22 @@ func renderPlayerCards(w http.ResponseWriter, players []models.Player) {
 		return
 	}
 
-	err = tmpl.Execute(w, players)
+	err = tmpl.ExecuteTemplate(w, "base", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-func playersHandler(w http.ResponseWriter, r *http.Request) {
+func (app *App) playersHandler(w http.ResponseWriter, r *http.Request) {
 	// Fetch players from database
 	players, err := models.FetchPlayersFromDB()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	p := &templateData{
+		Players: players,
+	}
 
-	renderPlayerCards(w, players)
+	app.renderPlayerCards(w, p)
 }

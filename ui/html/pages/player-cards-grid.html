@@ -27,7 +27,7 @@
             margin: 0;
             font-size: 1.2em;
         }
-        .player-image {
+        .player-Image {
             width: 100%;
             height: 225px;
             object-fit: cover;
@@ -63,16 +63,16 @@
 
 <body>
     <div class="grid">
-        {{range .Players}}
+        {{ range .Players }}
         <div class="card">
             <div class="name-container">
                 <h2 class="player-name">{{.Name}}</h2>
             </div>
-            <img src="{{.ImageURL}}" alt="{{.Name}}'s picture" class="player-image">
+            <img src="{{.Image}}" alt="{{.Name}}'s picture" class="player-Image">
             <div class="card-content">
                 <div class="stat-container">
                     <span class="stat-label">Games:</span>
-                    <span class="stat-value">{{.Games}}</span>
+                    <span class="stat-value">{{.GamesPlayed}}</span>
                 </div>
                 <div class="stat-container">
                     <span class="stat-label">Offense:</span>
