@@ -16,8 +16,9 @@ func (app *App) Routes() *http.ServeMux {
 
 	r.HandleFunc("GET /login", app.login)
 
-	r.HandleFunc("GET /players/create", app.playerForm)
-	r.HandleFunc("POST /players/create", app.newPlayer)
+	r.HandleFunc("GET /players/new", app.playerForm)
+	r.HandleFunc("POST /players/new", app.regsiterPlayerForm)
+	// Only for use after creation of a new player calls the updated card.
 	r.HandleFunc("GET /players/{id}", app.playerCard)
 	return r
 }
