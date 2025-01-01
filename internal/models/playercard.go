@@ -23,8 +23,27 @@ type UltimateModel struct {
 	DB *sql.DB
 }
 
+func FetchPlayerByID(id int) *Player {
+	for _, p := range players {
+		if p.ID == id {
+			return p
+		}
+	}
+	return nil
+}
+
 func FetchPlayersFromDB() ([]*Player, error) {
 	return players, nil
+}
+
+func NewPlayer(p *Player) int {
+	pCheck, _ := FetchPlayersFromDB()
+	num := len(pCheck)
+	p.ID = num + 1
+	p.Created = time.Now()
+	p.Updated = time.Now()
+	players = append(players, p)
+	return p.ID
 }
 
 var players = []*Player{

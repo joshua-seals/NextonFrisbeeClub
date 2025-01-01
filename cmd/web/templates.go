@@ -7,8 +7,8 @@ import (
 // Add all templateData structs to this struct
 // This way it is all accessible.
 type templateData struct {
-	PlayerCard *models.Player
-	Players    []*models.Player
+	Player  *models.Player
+	Players []*models.Player
 }
 
 // Use later once front-end work is complete

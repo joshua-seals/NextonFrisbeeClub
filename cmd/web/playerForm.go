@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/joshua-seals/NextonFrisbeeClub/internal/models"
 )
 
 var ErrTooLarge = fmt.Errorf("File too large")
@@ -26,6 +27,7 @@ func generateSecureFilename(ext string) string {
 // Handler to regsiterPlayerForm moved from main handlers file
 // due to the extra pieces
 func (app *App) regsiterPlayerForm(w http.ResponseWriter, r *http.Request) {
+	var imagePath string
 	// Parse the multipart form
 	err := r.ParseMultipartForm(10 << 20) // 10 MB limit
 	if err != nil {
@@ -42,11 +44,13 @@ func (app *App) regsiterPlayerForm(w http.ResponseWriter, r *http.Request) {
 			app.logger.Error("Image file upload encountered problem", err.Error())
 			return
 		}
+		imagePath = ""
 		// no file uploaded which is cool
 		goto PARSEFORM
 	}
 	defer file.Close()
-	if err = handleImageFile(file, header); err != nil {
+	imagePath, err = handleImageFile(file, header)
+	if err != nil {
 		app.logger.Error(err.Error())
 		if errors.Is(err, ErrTooLarge) || errors.Is(err, ErrNotImage) {
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -57,7 +61,6 @@ func (app *App) regsiterPlayerForm(w http.ResponseWriter, r *http.Request) {
 	}
 
 PARSEFORM:
-	// form.NewDecoder()
 	name := r.PostForm.Get("Name")
 	offense, err := strconv.Atoi(r.PostForm.Get("Offense"))
 	if err != nil {
@@ -71,6 +74,12 @@ PARSEFORM:
 		http.Error(w, "Server encountered an error", http.StatusInternalServerError)
 		return
 	}
+	speed, err := strconv.Atoi(r.PostForm.Get("Speed"))
+	if err != nil {
+		app.logger.Error("Error converting player speed", "Error", err.Error())
+		http.Error(w, "Server encountered an error", http.StatusInternalServerError)
+		return
+	}
 	endurance, err := strconv.Atoi(r.PostForm.Get("Endurance"))
 	if err != nil {
 		app.logger.Error("converting player endurance", "Error", err.Error())
@@ -79,27 +88,37 @@ PARSEFORM:
 	}
 	style := r.PostForm.Get("Style")
 	app.logger.Info("New player", "Name", name, "Offense", offense, "Defense", defense, "Endurance", endurance, "Style", style)
-	// Process other form fields...
-	// Redirect or respond as needed
+	// Create new player object
+	p := &models.Player{
+		Name:      name,
+		Image:     imagePath,
+		Offense:   offense,
+		Defense:   defense,
+		Speed:     speed,
+		Endurance: endurance,
+		Style:     style,
+	}
+	models.NewPlayer(p)
+	app.players(w, r)
 }
 
-func handleImageFile(file multipart.File, header *multipart.FileHeader) error {
+func handleImageFile(file multipart.File, header *multipart.FileHeader) (string, error) {
 
 	// Validate file size
 	if header.Size > 5*1024*1024 {
-		return ErrTooLarge
+		return "", ErrTooLarge
 	}
 
 	// Validate file type
 	if !strings.HasPrefix(header.Header.Get("Content-Type"), "image/") {
-		return ErrNotImage
+		return "", ErrNotImage
 	}
 
 	// Read first 512 bytes for content type detection
 	buffer := make([]byte, 512)
 	_, err := file.Read(buffer)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// Detect the content type
@@ -109,22 +128,25 @@ func handleImageFile(file multipart.File, header *multipart.FileHeader) error {
 	// Important: Reset the file pointer to the beginning
 	_, err = file.Seek(0, 0)
 	if err != nil {
-		return err
+		return "", err
 	}
-
+	sFileName := generateSecureFilename(ext)
 	// Create a new filename
-	filename := filepath.Join("./ui/static/uploads/", generateSecureFilename(ext))
+	filename := filepath.Join("./ui/static/uploads/", sFileName)
 
 	// Create the file
 	dst, err := os.Create(filename)
 	if err != nil {
-		return err
+		return "", err
 	}
 	defer dst.Close()
 
 	// Copy the uploaded file to the created file on the filesystem
 	if _, err := io.Copy(dst, file); err != nil {
-		return err
+		return "", err
 	}
-	return nil
+	// parse out the .ui/static
+	imageURL := fmt.Sprintf("http://localhost:3000/static/uploads/%s", sFileName)
+	fmt.Println(imageURL)
+	return imageURL, nil
 }
