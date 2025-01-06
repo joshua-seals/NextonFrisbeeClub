@@ -99,7 +99,8 @@ PARSEFORM:
 		Style:     style,
 	}
 	models.NewPlayer(p)
-	app.players(w, r)
+	// Redirect to player cards
+	http.Redirect(w, r, "/players", http.StatusSeeOther)
 }
 
 func handleImageFile(file multipart.File, header *multipart.FileHeader) (string, error) {
