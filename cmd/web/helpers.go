@@ -12,6 +12,7 @@ func (app *App) render(w http.ResponseWriter, status int, page string, data *tem
 	files := []string{
 		"./ui/html/base.html",
 		"./ui/html/partials/nav.html",
+		"./ui/html/partials/login.html",
 		page,
 	}
 	ts, err := template.ParseFiles(files...)

@@ -9,13 +9,12 @@ import (
 
 /*
 Need:
+ - Signup
  - Login
- - Login with Telegram
+ - Login with Telegram https://dev.to/shaggyrec/telegram-oauth-authorization-for-your-site-3f4l
 Member Features:
- - Create user card
  - Edit owned user card
- - Upload image
- - Rating system for other players
+ - Rating system for other players [array- ribbon rack of badges]
  - Badges
 */
 

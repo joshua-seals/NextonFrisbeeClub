@@ -15,7 +15,7 @@
 <body>
   <header> <div class="container-fluid position-relative" style="height: 300px; background-color: rgb(66, 200, 155);"> 
     <h1>Nexton Frisbee Club</h1> <div class="position-absolute top-0 end-0 m-3"> 
-    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">Login / Sign-Up</button> 
+    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">Login / Sign Up</button> 
   </div> 
   </div> 
   </header>
@@ -41,15 +41,15 @@
     <div class="modal-dialog"> 
       <div class="modal-content"> 
         <div class="modal-header"> 
-          <h5 class="modal-title" id="loginModalLabel">Login / Sign-Up</h5> 
+          <h5 class="modal-title" id="loginModalLabel">Login / Sign Up</h5> 
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
-        </div> <div class="modal-body"> 
-          <!-- Add your login/signup form here --> 
-          <p>Login/signup form goes here.</p> 
+        </div> 
+        <div class="modal-body"> 
+          <p>{{ template "modal" . }}</p> 
+        </div> 
       </div> 
     </div> 
-    </div> 
-</div>
+  </div>
 </body>
 </html>
 {{ end }}

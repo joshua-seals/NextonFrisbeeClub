@@ -1,0 +1,75 @@
+{{ define "modal" }}
+<div class="modal-body">
+  <ul class="nav nav-tabs" id="authTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">Login</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab" aria-controls="signup" aria-selected="false">Sign Up</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="authTabsContent">
+    <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+      <form id="loginForm" class="mt-3">
+        <div class="mb-3">
+          <label for="loginEmail" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="loginEmail" required>
+        </div>
+        <div class="mb-3">
+          <label for="loginPassword" class="form-label">Password</label>
+          <input type="password" class="form-control" id="loginPassword" required>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="rememberMe">
+          <label class="form-check-label" for="rememberMe">Remember me</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+      <form id="signupForm" class="mt-3">
+        <div class="mb-3">
+          <label for="signupName" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="signupName" required>
+        </div>
+        <div class="mb-3">
+          <label for="signupEmail" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="signupEmail" required>
+        </div>
+        <div class="mb-3">
+          <label for="signupPassword" class="form-label">Password</label>
+          <input type="password" class="form-control" id="signupPassword" required>
+        </div>
+        <div class="mb-3">
+          <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" id="signupConfirmPassword" required>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+          <label class="form-check-label" for="agreeTerms">I agree to the Terms and Conditions</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+
+  loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Add your login logic here
+    console.log('Login submitted');
+  });
+
+  signupForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Add your signup logic here
+    console.log('Signup submitted');
+  });
+});
+</script>
+{{ end }}
