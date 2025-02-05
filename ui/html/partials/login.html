@@ -27,26 +27,26 @@
       </form>
     </div>
     <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
-      <form id="signupForm" class="mt-3">
+      <form id="signupForm" class="mt-3" action='/signup' method='POST' enctype="multipart/form-data">
         <div class="mb-3">
           <label for="signupName" class="form-label">Full Name</label>
-          <input type="text" class="form-control" id="signupName" required>
+          <input type="text" class="form-control" id="signupName" name="signupName" required>
         </div>
         <div class="mb-3">
           <label for="signupEmail" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="signupEmail" required>
+          <input type="email" class="form-control" id="signupEmail" name="signupEmail" required>
         </div>
         <div class="mb-3">
           <label for="signupPassword" class="form-label">Password</label>
-          <input type="password" class="form-control" id="signupPassword" required>
+          <input type="password" class="form-control" id="signupPassword" name="signupPassword" required minlength="7">
         </div>
         <div class="mb-3">
           <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
-          <input type="password" class="form-control" id="signupConfirmPassword" required>
+          <input type="password" class="form-control" id="signupConfirmPassword" name="signupConfirmPassword" required minlength="7">
         </div>
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="agreeTerms" required>
-          <label class="form-check-label" for="agreeTerms">I agree to the Terms and Conditions</label>
+          <label class="form-check-label" for="agreeTerms">Terms and Conditions: I agree to be respectful to others, encouraging and nice 🙂 and submit my behaviour on this system to the discretion of the administrator who may delete my account completely. This site is personally owned/developed/maintained and potentially volitile, data (images) could be lost forever due to system maintenance/shutdown. My usage of this site does not constitute ownership in any way. </label>
         </div>
         <button type="submit" class="btn btn-primary">Sign Up</button>
       </form>
@@ -67,8 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   signupForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    // Add your signup logic here
-    console.log('Signup submitted');
+    var password = document.getElementById('signupPassword').value;
+    var confirmPassword = document.getElementById('signupConfirmPassword').value;
+  
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return // Prevent form submission
+    }
+    signupForm.submit();
   });
 });
 </script>

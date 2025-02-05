@@ -15,6 +15,7 @@ func (app *App) Routes() *http.ServeMux {
 	r.HandleFunc("GET /players", app.players)
 
 	r.HandleFunc("GET /login", app.login)
+	r.HandleFunc("POST /signup", app.signUp)
 
 	r.HandleFunc("GET /players/new", app.playerForm)
 	r.HandleFunc("POST /players/new", app.regsiterPlayerForm)

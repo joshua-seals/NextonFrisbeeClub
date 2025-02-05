@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -9,7 +10,7 @@ import (
 
 /*
 Need:
- - Signup
+ - Signup (associate name with player card)
  - Login
  - Login with Telegram https://dev.to/shaggyrec/telegram-oauth-authorization-for-your-site-3f4l
 Member Features:
@@ -62,8 +63,25 @@ func (app *App) login(w http.ResponseWriter, r *http.Request) {
 }
 
 // SignUp should immediately take the user to Create New Player
-func (app *App) SignUp(w http.ResponseWriter, r *http.Request) {
+func (app *App) signUp(w http.ResponseWriter, r *http.Request) {
+	// Parse the multipart form data
+	err := r.ParseMultipartForm(10 << 20) // 10 MB max memory
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
+	// Get form values
+	name := r.FormValue("signupName")
+	email := r.FormValue("signupEmail")
+	password := r.FormValue("signupPassword")
+
+	// log.Printf("Form: %+v", r.PostForm)
+	// log.Printf("MultipartForm: %+v", r.MultipartForm)
+	// Here you would typically validate the data and create a new user in your database
+	log.Printf("New signup: Name: %s, Email: %s Pass: %s", name, email, password)
+	// upon successful signup, direct new user to create player-card
+	http.Redirect(w, r, "/players/new", http.StatusSeeOther)
 }
 
 func (app *App) playerCard(w http.ResponseWriter, r *http.Request) {
