@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/joshua-seals/NextonFrisbeeClub/internal/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 /*
@@ -59,6 +61,23 @@ func (app *App) playerForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) login(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseMultipartForm(10 << 2)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	email := r.FormValue("loginEmail")
+	password := r.FormValue("loginPassword")
+	log.Printf("Login- Name: %s, Email: %s Pass: %s", email, password)
+	// Pull hash from db for comparison
+	hashedPassword := []byte("password123")
+	err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
+	if err != nil {
+		fmt.Println("Invalid password!")
+	} else {
+		fmt.Println("Password is correct.")
+	}
+	// Set session cookie and allow auth or deny
 
 }
 
@@ -76,10 +95,15 @@ func (app *App) signUp(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("signupEmail")
 	password := r.FormValue("signupPassword")
 
-	// log.Printf("Form: %+v", r.PostForm)
-	// log.Printf("MultipartForm: %+v", r.MultipartForm)
 	// Here you would typically validate the data and create a new user in your database
 	log.Printf("New signup: Name: %s, Email: %s Pass: %s", name, email, password)
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Store in db
+	log.Printf(string(hashedPassword))
 	// upon successful signup, direct new user to create player-card
 	http.Redirect(w, r, "/players/new", http.StatusSeeOther)
 }
@@ -98,6 +122,7 @@ func (app *App) playerCard(w http.ResponseWriter, r *http.Request) {
 	data := &templateData{
 		Players: p,
 	}
+
 	// Render the page with the data
 	page := "./ui/html/pages/player-cards-grid.html"
 	app.render(w, http.StatusOK, page, data)

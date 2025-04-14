@@ -16,6 +16,8 @@ func main() {
 	app.logger = logger
 
 	server := http.Server{
+		// If address is changed, ensure changes to playerForm url
+		// port are also made. Currently not dynamic
 		Addr:    ":3000",
 		Handler: app.Routes(),
 	}
