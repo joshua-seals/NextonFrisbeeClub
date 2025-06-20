@@ -15,8 +15,8 @@ import (
 	"github.com/joshua-seals/NextonFrisbeeClub/internal/models"
 )
 
-var ErrTooLarge = fmt.Errorf("File too large")
-var ErrNotImage = fmt.Errorf("File is not an image")
+var ErrTooLarge = errors.New("file too large")
+var ErrNotImage = errors.New("file is not an image")
 
 func generateSecureFilename(ext string) string {
 	name := uuid.NewString()
@@ -41,7 +41,7 @@ func (app *App) regsiterPlayerForm(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if err != http.ErrMissingFile {
 			http.Error(w, "Server encountered an error", http.StatusInternalServerError)
-			app.logger.Error("Image file upload encountered problem", err.Error())
+			app.logger.Error("Image file upload encountered problem", "Error", err.Error())
 			return
 		}
 		imagePath = ""

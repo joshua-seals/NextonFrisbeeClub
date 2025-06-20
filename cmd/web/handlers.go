@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/joshua-seals/NextonFrisbeeClub/internal/models"
 	"golang.org/x/crypto/bcrypt"
@@ -23,7 +24,13 @@ Member Features:
 
 func (app *App) home(w http.ResponseWriter, r *http.Request) {
 	page := "./ui/html/pages/home.html"
-	app.render(w, http.StatusOK, page, nil)
+	gameStatus := models.GetStatus()
+	date := time.Now().Format("January 2, 2006")
+	data := &templateData{
+		GameStatus: gameStatus,
+		Date:       date,
+	}
+	app.render(w, http.StatusOK, page, data)
 }
 
 func (app *App) ultimate(w http.ResponseWriter, r *http.Request) {
@@ -126,4 +133,19 @@ func (app *App) playerCard(w http.ResponseWriter, r *http.Request) {
 	// Render the page with the data
 	page := "./ui/html/pages/player-cards-grid.html"
 	app.render(w, http.StatusOK, page, data)
+}
+
+// Temporarily Update the Game Status
+func (app *App) gameStatus(w http.ResponseWriter, r *http.Request) {
+
+	statusCode := r.PathValue("status")
+	if statusCode == "1" {
+		// Cancel the game for 6 hours
+		models.SetTemporaryOverride("CANCELED", 12*time.Hour)
+		fmt.Fprintln(w, "Game status set to CANCELED for 12 hours.")
+	} else {
+		// You can optionally support other status codes or ignore them
+		fmt.Fprintln(w, "Unrecognized status. No change made.")
+	}
+
 }
