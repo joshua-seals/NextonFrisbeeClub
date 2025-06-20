@@ -1,9 +1,12 @@
-FROM golang as build 
+FROM golang:tip-alpine3.21 
 
-COPY . /opt/nextonfrisbeeclub/
+COPY . /nextonfrisbeeclub/
 
-WORKDIR /opt/nextonfrisbeeclub/
-RUN go build -o /cmd/web/ nextonfrisbeeclub 
+WORKDIR /nextonfrisbeeclub/
+RUN go build -o nfc ./cmd/web/  
+
+EXPOSE 3000 
+CMD [ "./nfc" ]
 
 
 
