@@ -32,7 +32,7 @@ func (app *App) regsiterPlayerForm(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(10 << 20) // 10 MB limit
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
-		app.logger.Error("Failed parsingMultipartFile", err.Error())
+		app.logger.Error("Failed parsingMultipartFile", "error", err.Error())
 		return
 	}
 

@@ -14,14 +14,15 @@ func (app *App) Routes() *http.ServeMux {
 	r.HandleFunc("GET /ultimate", app.ultimate)
 	r.HandleFunc("GET /players", app.players)
 
-	r.HandleFunc("GET /login", app.login)
-	r.HandleFunc("POST /signup", app.signUp)
+	// r.HandleFunc("GET /login", app.login)
+	// r.HandleFunc("POST /signup", app.signUp)
 
 	r.HandleFunc("POST /ultimate/game/{status}", app.gameStatus)
 
-	r.HandleFunc("GET /players/new", app.playerForm)
-	r.HandleFunc("POST /players/new", app.regsiterPlayerForm)
+	// r.HandleFunc("GET /players/new", app.playerForm)
+	// r.HandleFunc("POST /players/new", app.regsiterPlayerForm)
+
 	// Only for use after creation of a new player calls the updated card.
-	r.HandleFunc("GET /players/{id}", app.playerCard)
+	// r.HandleFunc("GET /players/{id}", app.playerCard)
 	return r
 }
